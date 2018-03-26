@@ -1,0 +1,128 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+SHARED_FOLDER = ENV["HOME"] + "/Documents/Projects/"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  # Pick a box to use:
+  config.vm.box = "debian/stretch64"
+  
+  # Networking
+  # config.vm.network "forwarded_port", guest: 3000, host: 3000 
+
+  ############################################################
+  # apt-get utils section 
+
+  config.vm.provision :shell, inline: "apt-get install -y software-properties-common"
+  config.vm.provision :shell, inline: "apt-get install -y dirmngr"
+  config.vm.provision :shell, inline: "apt-get install -y gcc"
+  config.vm.provision :shell, inline: "apt-get install -y g++"
+  config.vm.provision :shell, inline: "apt-get install -y make"
+
+  ############################################################
+
+  ############################################################
+  # Git Install section
+
+  # Install git
+  config.vm.provision :shell, inline: "apt-get update"
+  config.vm.provision :shell, inline: "apt-get -y install git"
+
+  ############################################################
+
+  ############################################################
+  # Oh My ZSH Install section
+
+  # ZSH installation file  
+  config.vm.provision :shell, privileged:false, path: "provision/zsh.sh"
+
+  ############################################################
+
+  ############################################################
+  # Must have tools section
+
+  # Install vim
+  config.vm.provision :shell, inline: "apt-get -y install vim"
+  config.vm.provision :shell, inline: "apt-get -y install vim-gtk"
+
+  # Install tmux 
+  config.vm.provision :shell, inline: "apt-get -y install tmux"
+
+  # Install curl 
+  config.vm.provision :shell, inline: "apt-get -y install curl"
+
+  # Install nmap 
+  config.vm.provision :shell, inline: "apt-get -y install nmap"
+
+  ############################################################
+
+  ############################################################
+  # Lang install section
+
+  # Install golang 
+  config.vm.provision :shell, privileged:false, path: "provision/golang.sh"
+
+  # Install rust 
+  config.vm.provision :shell, inline: "rustc --version || curl -s https://static.rust-lang.org/rustup.sh | sudo sh >/dev/null 2>&1"
+
+  # Install node.js 
+  config.vm.provision :shell, inline: "node -v || curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -"
+  config.vm.provision :shell, inline: "apt-get install -y nodejs"
+
+  # Install pip 
+  config.vm.provision :shell, inline: "apt-get -y install python-pip"
+  config.vm.provision :shell, inline: "apt-get -y install python3-pip"
+
+  ############################################################
+
+  ############################################################
+  # Sys-admin tools section
+
+  # Install tree
+  config.vm.provision :shell, inline: "apt-get -y install tree"
+
+  # Install psmisc 
+  config.vm.provision :shell, inline: "apt-get -y install psmisc"
+
+  # Install htop
+  config.vm.provision :shell, inline: "apt-get -y install htop"
+
+  # Install iotop 
+  config.vm.provision :shell, inline: "apt-get -y install iotop"
+
+  # Install nethogs 
+  config.vm.provision :shell, inline: "apt-get -y install nethogs"
+
+  # Install net-tools 
+  config.vm.provision :shell, inline: "apt-get -y install net-tools"
+
+  ############################################################
+
+  ############################################################
+  # RE tools section
+  # Install gdb 
+  config.vm.provision :shell, inline: "apt-get -y install gdb"
+
+  # Install strace 
+  config.vm.provision :shell, inline: "apt-get -y install strace"
+
+  # Install ltrace 
+  config.vm.provision :shell, inline: "apt-get -y install ltrace"
+
+  # Install r2
+  config.vm.provision :shell, privileged:false, 
+   inline: "r2 -v || git clone https://github.com/radare/radare2.git ~/.radare2"
+  config.vm.provision :shell, privileged:false, 
+    inline: "r2 -v || ~/.radare2/sys/install.sh"
+
+  ############################################################
+
+  ############################################################
+  # Sync folders
+
+  # config.vm.synced_folder SHARED_FOLDER, "/home/vagrant/Projects"
+  
+  ############################################################
+end
