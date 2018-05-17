@@ -33,10 +33,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   ############################################################
 
   ############################################################
-  # Oh My ZSH Install section
+  # Oh My Zsh Install section
 
-  # ZSH installation file  
+  # Install Zsh
+  config.vm.provision :shell, inline: "apt-get -y install zsh"
+
+  # Oh My Zsh configuration 
   config.vm.provision :shell, privileged:false, path: "provision/zsh.sh"
+
+  config.vm.provision :shell, inline: "chsh -s /bin/zsh vagrant"
 
   ############################################################
 
