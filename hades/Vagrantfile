@@ -1,0 +1,71 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  # The most common configuration options are documented and commented below.
+  # For a complete reference, please see the online documentation at
+  # https://docs.vagrantup.com.
+
+  # Every Vagrant development environment requires a box. You can search for
+  # boxes at https://atlas.hashicorp.com/search.
+  config.vm.box = "debian/stretch64"
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 2048 
+    v.cpus = 2
+  end
+
+  # Suppress Debian of accessing stdin 
+  #export DEBIAN_FRONTEND=noninteractive
+
+  config.vm.provision :shell, inline: "apt-get update"
+  config.vm.provision :shell, inline: "apt-get -y upgrade"
+  #config.vm.provision :shell, inline: "apt-get install -y --no-install-recommends apt-util"
+  config.vm.provision :shell, inline: "apt-get install -y build-essential"
+  config.vm.provision :shell, inline: "apt-get install -y software-properties-common"
+  config.vm.provision :shell, inline: "apt-get install -y dirmngr"
+  config.vm.provision :shell, inline: "apt-get install -y gcc"
+  config.vm.provision :shell, inline: "apt-get install -y g++"
+  config.vm.provision :shell, inline: "apt-get install -y make"
+  config.vm.provision :shell, inline: "apt-get install -y gdb"
+  config.vm.provision :shell, inline: "apt-get install -y strace"
+  config.vm.provision :shell, inline: "apt-get install -y ltrace"
+  config.vm.provision :shell, inline: "apt-get install -y xxd"
+  config.vm.provision :shell, inline: "apt-get install -y bsdiff"
+  config.vm.provision :shell, inline: "apt-get install -y libcapstone-dev"
+  config.vm.provision :shell, inline: "apt-get install -y libcapstone3"
+  config.vm.provision :shell, inline: "apt-get install -y flasm"
+  config.vm.provision :shell, inline: "apt-get install -y python-pip"
+  config.vm.provision :shell, inline: "apt-get install -y python3"
+  config.vm.provision :shell, inline: "apt-get install -y python3-pip"
+  config.vm.provision :shell, inline: "apt-get install -y libffi-dev"
+  config.vm.provision :shell, inline: "apt-get install -y git"
+  config.vm.provision :shell, inline: "apt-get install -y vim"
+  config.vm.provision :shell, inline: "apt-get install -y wget"
+  config.vm.provision :shell, inline: "apt-get install -y llvm"
+  config.vm.provision :shell, inline: "apt-get install -y clang"
+  config.vm.provision :shell, inline: "apt-get install -y lldb"
+  config.vm.provision :shell, inline: "apt-get install -y volatility"
+  config.vm.provision :shell, inline: "apt-get install -y binwalk"
+  config.vm.provision :shell, inline: "apt-get install -y python3-binwalk"
+
+  # Install r2
+  config.vm.provision :shell, privileged:false, 
+   inline: "r2 -v || git clone https://github.com/radare/radare2.git ~/.radare2"
+  config.vm.provision :shell, privileged:false, 
+    inline: "r2 -v || ~/.radare2/sys/install.sh"
+
+  # Install peda
+  config.vm.provision :shell, privileged:false,
+   inline: "git clone https://github.com/longld/peda.git ~/peda"
+  config.vm.provision :shell, privileged:false,
+   inline: "echo \"source ~/peda/peda.py\" >> ~/.gdbinit"
+
+  # Install angr 
+  config.vm.provision :shell, inline: "pip install angr"
+
+end
