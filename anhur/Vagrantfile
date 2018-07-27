@@ -1,3 +1,8 @@
 Vagrant.configure("2") do |config|
-  config.vm.box = "john-lowry/kali"
+  config.vm.box = "Sliim/kali-2018.1-lxde-amd64"
+  config.ssh.username = "root"
+  config.ssh.private_key_path = "./ssh_keys/pentest-env"
+  #config.vm.provider "virtualbox" do |v|
+  #  v.gui = true
+  #end
 end
