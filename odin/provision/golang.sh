@@ -2,7 +2,7 @@
 
 echo "Installing Go"
 
-VERSION=1.10
+VERSION=1.11.4
 OS=linux-amd64
 
 which go
