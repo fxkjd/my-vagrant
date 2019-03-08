@@ -70,7 +70,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision :shell, privileged:false, path: "provision/golang.sh"
 
   # Install rust 
-  config.vm.provision :shell, inline: "rustc --version || curl -s https://static.rust-lang.org/rustup.sh | sudo sh >/dev/null 2>&1"
+  config.vm.provision :shell, inline: "rustc --version || curl https://sh.rustup.rs -sSf | sh"
 
   # Install node.js 
   config.vm.provision :shell, inline: "node -v || curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -"
